@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Text Translator and Font Styler</title>
+<style>
+    @font-face {
+        font-family: 'Hoba';
+        src: url('./Hoba-GOwzg.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'JannaLTBold';
+        src: url('./Janna LT Bold.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'DiwaniLetter';
+        src: url('./Diwani Letter Regular.ttf') format('truetype');
+    }
+</style>
+</head>
+<body>
+
+<div>
+    <label for="textToTranslate">Enter English Text:</label>
+    <input type="text" id="textToTranslate">
+    <button onclick="translateText()">Translate and Apply Font</button>
+</div>
+
+<div id="fontSelector">
+    <label for="fonts">Choose a Font:</label>
+    <select id="fonts">
+        <option value="Hoba">Hoba</option>
+        <option value="JannaLTBold">Janna LT Bold</option>
+        <option value="DiwaniLetter">Diwani Letter</option>
+    </select>
+</div>
+
+<div id="translatedText" dir="rtl"></div>
+
+<script>
+async function translateText() {
+    const textToTranslate = document.getElementById('textToTranslate').value;
+    const font = document.getElementById('fonts').value;
+    
+    // Placeholder for actual translation logic
+    const translatedText = "مثال على نص مترجم"; // This should be replaced with actual translated text
+
+    const displayDiv = document.getElementById('translatedText');
+    displayDiv.textContent = translatedText;
+    displayDiv.style.fontFamily = font;
+}
+
+// Implement the actual translation function based on the API you choose
+// async function translateToArabic(text) { /* API call logic here */ }
+</script>
+
+</body>
+</html>
