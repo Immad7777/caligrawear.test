@@ -19,6 +19,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative; /* Added */
     }
 
     label {
@@ -57,59 +58,60 @@
     }
 
     .image-container {
-    position: relative;
-    width: 100%; /* Adjust based on your preference */
-    height: 400px; /* Adjust based on your preference or the aspect ratio of your image */
-    background-image: url('white_shirt.avif'); /* Path to your image */
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        position: relative;
+        width: 100%; /* Adjust based on your preference */
+        height: 400px; /* Adjust based on your preference or the aspect ratio of your image */
+        background-image: url('white_shirt.avif'); /* Path to your image */
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-#translatedText {
-    position: absolute; /* Positioning it over the image */
-    width: 80%; /* Adjust based on your preference */
-    text-align: center;
-    font-size: 24px; /* Or use the dynamic size from your slider */
-    color: white; /* Color of your text */
-    padding: 20px;
-}
+    #translatedText {
+        position: absolute; /* Positioning it over the image */
+        top: 50px; /* Adjust based on your preference */
+        width: 100%; /* Adjust based on your preference */
+        text-align: center;
+        font-size: 36px; /* Or use the dynamic size from your slider */
+        color: white; /* Color of your text */
+        padding: 20px;
+    }
 
-.download-button-container {
-    margin-top: 20px;
-}
+    .download-button-container {
+        margin-top: 20px;
+    }
 
-.download-button {
-    width: 100%;
-    background-color: #008CBA;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-}
+    .download-button {
+        width: 100%;
+        background-color: #008CBA;
+        color: white;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 18px;
+    }
 
-.download-button:hover {
-    background-color: #005F6B;
-}
+    .download-button:hover {
+        background-color: #005F6B;
+    }
 
-@font-face {
-    font-family: 'Hoba';
-    src: url('./Hoba-GOwzg.ttf') format('truetype');
-}
+    @font-face {
+        font-family: 'Hoba';
+        src: url('./Hoba-GOwzg.ttf') format('truetype');
+    }
 
-@font-face {
-    font-family: 'JannaLTBold';
-    src: url('./Janna LT Bold.ttf') format('truetype');
-}
+    @font-face {
+        font-family: 'JannaLTBold';
+        src: url('./Janna LT Bold.ttf') format('truetype');
+    }
 
-@font-face {
-    font-family: 'DiwaniLetter';
-    src: url('./Diwani Letter Regular.ttf') format('truetype');
-}
+    @font-face {
+        font-family: 'DiwaniLetter';
+        src: url('./Diwani Letter Regular.ttf') format('truetype');
+    }
 </style>
 </head>
 <body>
@@ -127,7 +129,7 @@
         <label for="fonts">Choose a Font:</label>
         <div>
             <label for="fontSizeSlider">Adjust Font Size:</label>
-            <input type="range" id="fontSizeSlider" min="16" max="40" value="24">
+            <input type="range" id="fontSizeSlider" min="16" max="40" value="36">
         </div>
         <select id="fonts">
             <option value="Hoba">Hoba</option>
