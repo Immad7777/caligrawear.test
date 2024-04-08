@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Text Translator and Font Styler</title>
+<title>Font Styler</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -44,6 +44,7 @@
 
     textarea {
         resize: vertical;
+        height: 150px; /* Adjusted height for better usability */
     }
 
     button {
@@ -122,8 +123,8 @@
 
 <div class="container">
     <div>
-        <label for="textToTranslate">Enter English Text:</label>
-        <textarea id="textToTranslate" placeholder="Type something..." rows="4"></textarea>
+        <label for="textToTranslate">Enter Text:</label>
+        <textarea id="textToTranslate" placeholder="اكتب شيئاً هنا..."></textarea>
     </div>
     <div class="image-container">
         <div id="translatedText"></div>
@@ -150,7 +151,7 @@
         </select>
     </div>
 
-    <button onclick="translateText()">Translate and Apply Font</button>
+    <button onclick="applyFontStyle()">Apply Font Style</button>
 
     <div class="download-button-container">
         <button class="download-button" onclick="downloadImage()">Download Image</button>
@@ -158,56 +159,17 @@
 </div>
 
 <script>
-async function translateText() {
+function applyFontStyle() {
     const textToTranslate = document.getElementById('textToTranslate').value;
     const font = document.getElementById('fonts').value;
     const fontColor = document.getElementById('fontColor').value;
+    const fontSize = document.getElementById('fontSizeSlider').value + 'px';
 
-    let displayText = textToTranslate;
-    
-    // Detect if the input text is English
-    if (/^[a-zA-Z\s]+$/.test(textToTranslate)) {
-        // Placeholder for translation logic to Arabic
-        displayText = "مثال على نص مترجم"; // Example translated text
-    }
-    
     const displayDiv = document.getElementById('translatedText');
-    displayDiv.textContent = displayText;
+    displayDiv.textContent = textToTranslate; // Directly display the input text
     displayDiv.style.fontFamily = font;
     displayDiv.style.color = fontColor;
-}
-
-async function downloadImage() {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    const translatedText = document.getElementById('translatedText');
-    const computedStyle = window.getComputedStyle(translatedText);
-
-    const a4Width = 8.27 * 96;
-    const a4Height = 11.69 * 96;
-
-    const scaleX = a4Width / translatedText.offsetWidth;
-    const scaleY = a4Height / translatedText.offsetHeight;
-    const scale = Math.min(scaleX, scaleY);
-
-    canvas.width = a4Width;
-    canvas.height = a4Height;
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.translate(canvas.width / 2, canvas.height / 2);
-    context.scale(scale, scale);
-    
-    context.font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-    context.fillStyle = computedStyle.color;
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText(translatedText.textContent, 0, 0);
-
-    const dataURL = canvas.toDataURL('image/jpeg');
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'translated_text.jpg';
-    link.click();
+    displayDiv.style.fontSize = fontSize;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -219,8 +181,8 @@ document.addEventListener('DOMContentLoaded', function() {
         translatedTextDiv.style.fontSize = newSize;
     }
 
-    updateFontSize();
-    fontSizeSlider.addEventListener('input', updateFontSize);
+    updateFontSize(); // Apply the initial font size based on the slider's default value
+    fontSizeSlider.addEventListener('input', updateFontSize); // Update the font size in real time as the slider moves
 });
 </script>
 
