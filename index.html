@@ -30,7 +30,7 @@
         color: #333;
     }
 
-    input[type="text"], select {
+    input[type="text"], select, textarea {
         width: 100%;
         padding: 15px;
         margin-top: 5px;
@@ -40,6 +40,10 @@
         border-radius: 8px;
         box-sizing: border-box;
         font-size: 20px;
+    }
+
+    textarea {
+        resize: vertical;
     }
 
     button {
@@ -119,7 +123,7 @@
 <div class="container">
     <div>
         <label for="textToTranslate">Enter English Text:</label>
-        <input type="text" id="textToTranslate" placeholder="Type something...">
+        <textarea id="textToTranslate" placeholder="Type something..." rows="4"></textarea>
     </div>
     <div class="image-container">
         <div id="translatedText"></div>
@@ -164,10 +168,8 @@ async function translateText() {
     // Detect if the input text is English
     if (/^[a-zA-Z\s]+$/.test(textToTranslate)) {
         // Placeholder for translation logic to Arabic
-        // This should be replaced with actual translation if the text is in English
         displayText = "مثال على نص مترجم"; // Example translated text
     }
-    // If the text is not English, it's assumed to be Arabic or non-English that doesn't require translation
     
     const displayDiv = document.getElementById('translatedText');
     displayDiv.textContent = displayText;
@@ -179,100 +181,45 @@ async function downloadImage() {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const translatedText = document.getElementById('translatedText');
-    
-    // A4 paper size in pixels (assuming 96dpi)
-    const a4Width = 8.27 * 96;
-    const a4Height = 11.69 * 96; // Corrected A4 height dimension
-
-    // Get the computed styles of the translatedText
     const computedStyle = window.getComputedStyle(translatedText);
 
-    // Calculate scaling factor to fit the text and image on A4 paper
+    const a4Width = 8.27 * 96;
+    const a4Height = 11.69 * 96;
+
     const scaleX = a4Width / translatedText.offsetWidth;
     const scaleY = a4Height / translatedText.offsetHeight;
     const scale = Math.min(scaleX, scaleY);
 
-    // Resize canvas to fit A4 paper
     canvas.width = a4Width;
     canvas.height = a4Height;
 
-    // Clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Translate canvas origin to center
     context.translate(canvas.width / 2, canvas.height / 2);
-
-    // Apply scaling
     context.scale(scale, scale);
-
-    // Prepare font style from computed styles
+    
     context.font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
     context.fillStyle = computedStyle.color;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillText(translatedText.textContent, 0, 0);
 
-    // Download image
     const dataURL = canvas.toDataURL('image/jpeg');
     const link = document.createElement('a');
     link.href = dataURL;
     link.download = 'translated_text.jpg';
     link.click();
 }
-
-    
-    // A4 paper size in pixels (assuming 96dpi)
-    const a4Width = 8.27 * 96;
-    const a4Height = 16 * 96;
-
-    // Calculate scaling factor to fit the text and image on A4 paper
-    const scaleX = a4Width / translatedText.offsetWidth;
-    const scaleY = a4Height / translatedText.offsetHeight;
-    const scale = Math.min(scaleX, scaleY);
-
-    // Resize canvas to fit A4 paper
-    canvas.width = a4Height;
-    canvas.height = a4Width;
-
-    // Clear canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Translate canvas origin to center
-    context.translate(canvas.width / 2, canvas.height / 2);
-
-    // Apply scaling
-    context.scale(scale, scale);
-
-    // Draw translated text with increased font size
-    context.font = `bold ${window.getComputedStyle(translatedText).fontSize} Arial`; // Adjusted font size
-    context.fillStyle = window.getComputedStyle(translatedText).color;
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText(translatedText.textContent, 0, 0);
-
-    // Download image
-    const dataURL = canvas.toDataURL('image/jpeg');
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'translated_text.jpg';
-    link.click();
-}
-
 
 document.addEventListener('DOMContentLoaded', function() {
     const fontSizeSlider = document.getElementById('fontSizeSlider');
     const translatedTextDiv = document.getElementById('translatedText');
 
-    // Function to update font size
     function updateFontSize() {
         const newSize = fontSizeSlider.value + 'px';
         translatedTextDiv.style.fontSize = newSize;
     }
 
-    // Initial set to match the slider's default value
     updateFontSize();
-
-    // Event listener for slider changes
     fontSizeSlider.addEventListener('input', updateFontSize);
 });
 </script>
