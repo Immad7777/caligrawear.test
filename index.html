@@ -182,6 +182,47 @@ async function downloadImage() {
     
     // A4 paper size in pixels (assuming 96dpi)
     const a4Width = 8.27 * 96;
+    const a4Height = 11.69 * 96; // Corrected A4 height dimension
+
+    // Get the computed styles of the translatedText
+    const computedStyle = window.getComputedStyle(translatedText);
+
+    // Calculate scaling factor to fit the text and image on A4 paper
+    const scaleX = a4Width / translatedText.offsetWidth;
+    const scaleY = a4Height / translatedText.offsetHeight;
+    const scale = Math.min(scaleX, scaleY);
+
+    // Resize canvas to fit A4 paper
+    canvas.width = a4Width;
+    canvas.height = a4Height;
+
+    // Clear canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Translate canvas origin to center
+    context.translate(canvas.width / 2, canvas.height / 2);
+
+    // Apply scaling
+    context.scale(scale, scale);
+
+    // Prepare font style from computed styles
+    context.font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+    context.fillStyle = computedStyle.color;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(translatedText.textContent, 0, 0);
+
+    // Download image
+    const dataURL = canvas.toDataURL('image/jpeg');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'translated_text.jpg';
+    link.click();
+}
+
+    
+    // A4 paper size in pixels (assuming 96dpi)
+    const a4Width = 8.27 * 96;
     const a4Height = 16 * 96;
 
     // Calculate scaling factor to fit the text and image on A4 paper
