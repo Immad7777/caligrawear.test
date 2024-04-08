@@ -184,6 +184,41 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFontSize(); // Apply the initial font size based on the slider's default value
     fontSizeSlider.addEventListener('input', updateFontSize); // Update the font size in real time as the slider moves
 });
+
+async function downloadImage() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800; // Set canvas width
+    canvas.height = 600; // Set canvas height
+    const context = canvas.getContext('2d');
+    
+    // Ensure the canvas background is white for the download
+    context.fillStyle = '#FFF'; // White background
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    const text = document.getElementById('translatedText').textContent;
+    const font = document.getElementById('fonts').value;
+    const fontSize = document.getElementById('fontSizeSlider').value;
+    const fontColor = document.getElementById('fontColor').value;
+    
+    // Wait for the font to be loaded
+    await document.fonts.load(`${fontSize}px ${font}`);
+
+    context.textAlign = 'center'; // Center the text
+    context.textBaseline = 'middle'; // Align text middle in the canvas
+    context.fillStyle = fontColor; // Text color
+    context.font = `${fontSize}px ${font}`; // Font size and family
+    context.fillText(text, canvas.width / 2, canvas.height / 2); // Draw the text
+
+    // Convert canvas to image and download it
+    const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    const link = document.createElement('a');
+    link.download = 'custom_text.png';
+    link.href = image;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 </script>
 
 </body>
