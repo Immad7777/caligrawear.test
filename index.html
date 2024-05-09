@@ -80,7 +80,6 @@
         top: 100px;
         width: 100%;
         text-align: center;
-        font-size: 70;
         color: white;
     }
 
@@ -159,7 +158,18 @@ function applyFontStyle() {
     const textToTranslate = document.getElementById('textToTranslate').value;
     const font = document.getElementById('fonts').value;
     const fontColor = document.getElementById('fontColor').value;
-    const fontSize = '50px'; // 25% of the original slider range
+    
+    let fontSize;
+
+    switch (font) {
+        case 'Hoba':
+            fontSize = '75px';
+            break;
+        case 'JannaLTBold':
+        case 'DiwaniLetter':
+            fontSize = '85px';
+            break;
+    }
 
     const displayDiv = document.getElementById('translatedText');
     displayDiv.textContent = textToTranslate;
