@@ -80,6 +80,7 @@
         top: 100px;
         width: 100%;
         text-align: center;
+        font-size: 72px;
         color: white;
     }
 
@@ -131,6 +132,10 @@
     
     <div>
         <label for="fonts">Choose a Font:</label>
+        <div>
+            <label for="fontSizeSlider">Adjust Font Size:</label>
+            <input type="range" id="fontSizeSlider" min="16" max="400" value="144">
+        </div>
         <select id="fonts">
             <option value="Hoba">Hoba</option>
             <option value="JannaLTBold">Janna LT Bold</option>
@@ -158,25 +163,27 @@ function applyFontStyle() {
     const textToTranslate = document.getElementById('textToTranslate').value;
     const font = document.getElementById('fonts').value;
     const fontColor = document.getElementById('fontColor').value;
-    
-    let fontSize;
-
-    switch (font) {
-        case 'Hoba':
-            fontSize = '80px';
-            break;
-        case 'JannaLTBold':
-        case 'DiwaniLetter':
-            fontSize = '60px';
-            break;
-    }
+    const fontSize = document.getElementById('fontSizeSlider').value + 'px';
 
     const displayDiv = document.getElementById('translatedText');
-    displayDiv.textContent = textToTranslate;
+    displayDiv.textContent = textToTranslate; // Directly display the input text
     displayDiv.style.fontFamily = font;
     displayDiv.style.color = fontColor;
     displayDiv.style.fontSize = fontSize;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fontSizeSlider = document.getElementById('fontSizeSlider');
+    const translatedTextDiv = document.getElementById('translatedText');
+
+    function updateFontSize() {
+        const newSize = fontSizeSlider.value + 'px';
+        translatedTextDiv.style.fontSize = newSize;
+    }
+
+    updateFontSize(); // Apply the initial font size based on the slider's default value
+    fontSizeSlider.addEventListener('input', updateFontSize); // Update the font size in real time as the slider moves
+});
 
 async function downloadImage() {
     const canvas = document.createElement('canvas');
@@ -222,6 +229,7 @@ async function downloadImage() {
     link.download = 'translated_text.jpg';
     link.click();
 }
+
 </script>
 
 </body>
