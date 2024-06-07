@@ -77,7 +77,6 @@
 
     #translatedText {
         position: absolute;
-        top: 100px;
         width: 100%;
         text-align: center;
         font-size: 72px;
@@ -126,7 +125,17 @@
         <label for="textToTranslate">Enter Text:</label>
         <textarea id="textToTranslate" placeholder="اكتب شيئاً هنا..."></textarea>
     </div>
-    <div class="image-container">
+    <div>
+        <label for="background">Choose a Background:</label>
+        <select id="background" onchange="changeBackground()">
+            <option value="white_shirt.avif">White Shirt</option>
+            <option value="Blackshirt.png">Black Shirt</option>
+            <option value="isolated-black-tote-bag_125540-2275.png">Tote Bag</option>
+            <option value="whitehoodie.png">White Hoodie</option>
+            <option value="blackhoodie.jpg">Black Hoodie</option>
+        </select>
+    </div>
+    <div class="image-container" id="imageContainer">
         <div id="translatedText"></div>
     </div>
     
@@ -184,6 +193,20 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFontSize(); // Apply the initial font size based on the slider's default value
     fontSizeSlider.addEventListener('input', updateFontSize); // Update the font size in real time as the slider moves
 });
+
+function changeBackground() {
+    const background = document.getElementById('background').value;
+    const imageContainer = document.getElementById('imageContainer');
+    const translatedText = document.getElementById('translatedText');
+
+    imageContainer.style.backgroundImage = `url('${background}')`;
+    
+    if (background === 'white_shirt.avif' || background === 'Blackshirt.png' || background === 'whitehoodie.png' || background === 'blackhoodie.jpg') {
+        translatedText.style.top = '100px';
+    } else if (background === 'isolated-black-tote-bag_125540-2275.png') {
+        translatedText.style.top = '200px';
+    }
+}
 
 async function downloadImage() {
     const canvas = document.createElement('canvas');
