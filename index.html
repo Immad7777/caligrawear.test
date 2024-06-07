@@ -81,6 +81,7 @@
         text-align: center;
         font-size: 72px;
         color: white;
+        pointer-events: none; /* Prevent interaction with text */
     }
 
     .download-button-container {
@@ -116,6 +117,26 @@
         font-family: 'DiwaniLetter';
         src: url('./Diwani Letter Regular.ttf') format('truetype');
     }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .vertical-control {
+        writing-mode: bt-lr; /* Rotate the slider to be vertical */
+        transform: rotate(90deg); /* Correct the rotation direction */
+        position: absolute;
+        right: -20px;
+    }
+
+    .horizontal-control {
+        width: 100%;
+        margin-top: 10px; /* Add margin to separate from image */
+    }
 </style>
 </head>
 <body>
@@ -131,19 +152,26 @@
             <option value="white_shirt.avif">White Shirt</option>
             <option value="Blackshirt.png">Black Shirt</option>
             <option value="isolated-black-tote-bag_125540-2275.png">Tote Bag</option>
-            <option value="whitehoodie.png">White Hoodie</option>
+            <option value="whitehoodie.jpg">White Hoodie</option>
             <option value="blackhoodie.jpg">Black Hoodie</option>
         </select>
     </div>
-    <div class="image-container" id="imageContainer">
-        <div id="translatedText"></div>
+    <div class="controls">
+        <div class="image-container" id="imageContainer">
+            <div id="translatedText"></div>
+        </div>
+        <input type="range" id="verticalSlider" class="vertical-control" min="0" max="500" value="100">
+    </div>
+    <div class="horizontal-control">
+
+        <input type="range" id="horizontalSlider" min="-400" max="400" value="0">
     </div>
     
     <div>
         <label for="fonts">Choose a Font:</label>
         <div>
             <label for="fontSizeSlider">Adjust Font Size:</label>
-            <input type="range" id="fontSizeSlider" min="16" max="400" value="144">
+            <input type="range" id="fontSizeSlider" min="16" max="150" value="50">
         </div>
         <select id="fonts">
             <option value="Hoba">Hoba</option>
@@ -157,6 +185,9 @@
         <select id="fontColor">
             <option value="silver">Silver</option>
             <option value="#997B00">Gold</option>
+            <option value="#ffb825">Honey Gold</option>
+            <option value="#FFFFFF">White</option>
+            <option value="Black">Black</option>
         </select>
     </div>
 
@@ -183,6 +214,8 @@ function applyFontStyle() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const fontSizeSlider = document.getElementById('fontSizeSlider');
+    const verticalSlider = document.getElementById('verticalSlider');
+    const horizontalSlider = document.getElementById('horizontalSlider');
     const translatedTextDiv = document.getElementById('translatedText');
 
     function updateFontSize() {
@@ -190,8 +223,23 @@ document.addEventListener('DOMContentLoaded', function() {
         translatedTextDiv.style.fontSize = newSize;
     }
 
+    function updateVerticalPosition() {
+        const newPosition = verticalSlider.value + 'px';
+        translatedTextDiv.style.top = newPosition;
+    }
+
+    function updateHorizontalPosition() {
+        const newPosition = horizontalSlider.value + 'px';
+        translatedTextDiv.style.left = newPosition;
+    }
+
     updateFontSize(); // Apply the initial font size based on the slider's default value
+    updateVerticalPosition(); // Apply the initial vertical position based on the slider's default value
+    updateHorizontalPosition(); // Apply the initial horizontal position based on the slider's default value
+    
     fontSizeSlider.addEventListener('input', updateFontSize); // Update the font size in real time as the slider moves
+    verticalSlider.addEventListener('input', updateVerticalPosition); // Update the vertical position in real time as the slider moves
+    horizontalSlider.addEventListener('input', updateHorizontalPosition); // Update the horizontal position in real time as the slider moves
 });
 
 function changeBackground() {
@@ -201,11 +249,14 @@ function changeBackground() {
 
     imageContainer.style.backgroundImage = `url('${background}')`;
     
-    if (background === 'white_shirt.avif' || background === 'Blackshirt.png' || background === 'whitehoodie.png' || background === 'blackhoodie.jpg') {
+    if (background === 'white_shirt.avif' || background === 'Blackshirt.png' || background === 'whitehoodie.jpg' || background === 'blackhoodie.jpg') {
         translatedText.style.top = '100px';
     } else if (background === 'isolated-black-tote-bag_125540-2275.png') {
         translatedText.style.top = '200px';
     }
+
+    document.getElementById('verticalSlider').value = parseInt(translatedText.style.top);
+    document.getElementById('horizontalSlider').value = parseInt(translatedText.style.left) || 0;
 }
 
 async function downloadImage() {
