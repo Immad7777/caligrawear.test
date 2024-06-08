@@ -120,22 +120,93 @@
 
     .controls {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         margin-top: 20px;
         position: relative;
+    }
+
+    .vertical-control-container {
+        position: relative;
+        width: 350px;
+    }
+
+    .vertical-control-label {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: rotate(90deg) translateY(-50%);
+        transform-origin: left center;
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .vertical-control {
         writing-mode: bt-lr; /* Rotate the slider to be vertical */
         transform: rotate(90deg); /* Correct the rotation direction */
         position: absolute;
-        right: -20px;
+        right: -100px; /* Adjusted to move further to the right */
+    }
+
+    .horizontal-control-container {
+        width: 100%;
+        text-align: center;
+    }
+
+    .horizontal-control-label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .horizontal-control {
         width: 100%;
-        margin-top: 10px; /* Add margin to separate from image */
+    }
+
+    /* Slider Styles */
+    input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: #ddd;
+        outline: none;
+        opacity: 0.9;
+        transition: opacity .15s ease-in-out;
+    }
+
+    input[type="range"]:hover {
+        opacity: 1;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+        transition: background .15s ease-in-out;
+    }
+
+    input[type="range"]:hover::-webkit-slider-thumb {
+        background: #45a049;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+        transition: background .15s ease-in-out;
+    }
+
+    input[type="range"]:hover::-moz-range-thumb {
+        background: #45a049;
     }
 </style>
 </head>
@@ -144,7 +215,7 @@
 <div class="container">
     <div>
         <label for="textToTranslate">Enter Text:</label>
-        <textarea id="textToTranslate" placeholder="اكتب شيئاً هنا..."></textarea>
+        <textarea id="textToTranslate" placeholder="Type.../اكتب شيئاً هنا..." oninput="applyFontStyle()"></textarea>
     </div>
     <div>
         <label for="background">Choose an item:</label>
@@ -160,20 +231,23 @@
         <div class="image-container" id="imageContainer">
             <div id="translatedText"></div>
         </div>
-        <input type="range" id="verticalSlider" class="vertical-control" min="0" max="500" value="100">
+        <div class="vertical-control-container">
+            <label class="vertical-control-label">Vertical Position</label>
+            <input type="range" id="verticalSlider" class="vertical-control" min="0" max="500" value="100" oninput="updateVerticalPosition()">
+        </div>
     </div>
-    <div class="horizontal-control">
-
-        <input type="range" id="horizontalSlider" min="-400" max="400" value="0">
+    <div class="horizontal-control-container">
+        <label class="horizontal-control-label">Horizontal Position</label>
+        <input type="range" id="horizontalSlider" class="horizontal-control" min="-400" max="400" value="0" oninput="updateHorizontalPosition()">
     </div>
     
     <div>
+        <label for="fontSizeSlider">Adjust Font Size:</label>
+        <input type="range" id="fontSizeSlider" min="16" max="150" value="50" oninput="updateFontSize()">
+    </div>
+    <div>
         <label for="fonts">Choose a Font:</label>
-        <div>
-            <label for="fontSizeSlider">Adjust Font Size:</label>
-            <input type="range" id="fontSizeSlider" min="16" max="150" value="50">
-        </div>
-        <select id="fonts">
+        <select id="fonts" onchange="applyFontStyle()">
             <option value="Hoba">Hoba</option>
             <option value="JannaLTBold">Janna LT Bold</option>
             <option value="DiwaniLetter">Diwani Letter</option>
@@ -182,7 +256,7 @@
 
     <div>
         <label for="fontColor">Choose Font Color:</label>
-        <select id="fontColor">
+        <select id="fontColor" onchange="applyFontStyle()">
             <option value="silver">Silver</option>
             <option value="#997B00">Gold</option>
             <option value="#ffb825">Honey Gold</option>
@@ -191,10 +265,14 @@
         </select>
     </div>
 
-    <button onclick="applyFontStyle()">Apply Font Style</button>
+    <div class="download-button-container">
+        <button class="download-button" onclick="downloadImage()">Download Font</button>
+    </div>
 
     <div class="download-button-container">
-        <button class="download-button" onclick="downloadImage()">Download Image</button>
+        <a href="https://caligrawear.com/collections/all">
+            <button class="download-button">Place Your Order On The Website</button>
+        </a>
     </div>
 </div>
 
